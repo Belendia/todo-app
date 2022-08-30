@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import '../data/model/task.dart';
+import '../model/task.dart';
 
 class TodoService {
   late Box<Task> _tasks;
@@ -8,6 +8,10 @@ class TodoService {
   Future<void> init() async {
     Hive.registerAdapter(TaskAdapter());
     _tasks = await Hive.openBox<Task>('tasks');
+
+    await _tasks.clear();
+    await _tasks.add(Task('user1', 'Flutter is a nice framework', true));
+    await _tasks.add(Task('user2', 'React Native is a nice framework', true));
   }
 
   List<Task> getTasks(final String username) {

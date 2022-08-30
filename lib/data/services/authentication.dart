@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import '../data/model/user.dart';
+import '../model/user.dart';
 
 class AuthenticationService {
   late Box<User> _users;
@@ -8,6 +8,12 @@ class AuthenticationService {
   Future<void> init() async {
     Hive.registerAdapter(UserAdapter());
     _users = await Hive.openBox<User>('userBox');
+    print('HIVE==============================');
+    print(_users.isNotEmpty.toString());
+    if (!_users.isNotEmpty) {
+      await _users.add(User('user1', 'test'));
+      await _users.add(User('user2', 'test'));
+    }
   }
 
   Future<String?> authenticateUser(
