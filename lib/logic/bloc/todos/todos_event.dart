@@ -21,3 +21,12 @@ class AddTodoEvent extends TodosEvent {
   @override
   List<Object?> get props => [todoText];
 }
+
+class ToogleTodoEvent extends TodosEvent {
+  final String todoTask;
+
+  const ToogleTodoEvent(this.todoTask);
+
+  @override
+  List<Object?> get props => [todoTask];
+}

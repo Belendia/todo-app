@@ -28,7 +28,10 @@ class TodosScreen extends StatelessWidget {
                       title: Text(e.task),
                       trailing: Checkbox(
                         value: e.completed,
-                        onChanged: (val) {},
+                        onChanged: (val) {
+                          BlocProvider.of<TodosBloc>(context)
+                              .add(ToogleTodoEvent(e.task));
+                        },
                       ),
                     ),
                   ),
