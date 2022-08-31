@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../constants/enums.dart';
 import '../../../data/services/authentication.dart';
 import '../../../data/services/todo.dart';
 
@@ -26,6 +27,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       await _auth.init();
       await _todo.init();
 
+      emit(const HomeInitial());
+    });
+
+    on<RegisterAccountEvent>((event, emit) async {
+      final result = await _auth.createUser(event.username, event.password);
+
+      switch (result) {
+        case UserCreationResult.success:
+          emit(SuccessfulLoginState(event.username));
+          break;
+        case UserCreationResult.failure:
+          emit(const HomeInitial(error: "There's been an error"));
+          break;
+        case UserCreationResult.alreadyExists:
+          emit(const HomeInitial(error: "User already exists"));
+          break;
+      }
+
+      // for successive login requests
       emit(const HomeInitial());
     });
   }

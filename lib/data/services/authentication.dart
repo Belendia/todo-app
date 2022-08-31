@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 
+import '../../constants/enums.dart';
 import '../model/user.dart';
 
 class AuthenticationService {
@@ -24,6 +25,22 @@ class AuthenticationService {
       return username;
     } else {
       return null;
+    }
+  }
+
+  Future<UserCreationResult> createUser(
+      final String username, final String password) async {
+    final alreadyExists = _users.values.any(
+        (element) => element.username.toLowerCase() == username.toLowerCase());
+    if (alreadyExists) {
+      return UserCreationResult.alreadyExists;
+    }
+
+    try {
+      _users.add(User(username, password));
+      return UserCreationResult.success;
+    } on Exception catch (ex) {
+      return UserCreationResult.failure;
     }
   }
 }

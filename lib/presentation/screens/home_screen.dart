@@ -30,6 +30,16 @@ class HomeScreen extends StatelessWidget {
                 ),
               );
             }
+
+            if (state is HomeInitial) {
+              if (state.error != null) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                      title: const Text('Error'), content: Text(state.error!)),
+                );
+              }
+            }
           },
           builder: (context, state) {
             if (state is HomeInitial) {
@@ -44,12 +54,29 @@ class HomeScreen extends StatelessWidget {
                     obscureText: true,
                     controller: passwordField,
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        BlocProvider.of<HomeBloc>(context).add(
-                            LoginEvent(usernameField.text, passwordField.text));
-                      },
-                      child: const Text('LOGIN'))
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<HomeBloc>(context).add(LoginEvent(
+                              usernameField.text, passwordField.text));
+                        },
+                        child: const Text('LOGIN'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            BlocProvider.of<HomeBloc>(context).add(
+                                RegisterAccountEvent(
+                                    usernameField.text, passwordField.text));
+                          },
+                          child: const Text('REGISTER'),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               );
             }
