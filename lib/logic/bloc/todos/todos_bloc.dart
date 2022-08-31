@@ -13,7 +13,13 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
   TodosBloc(this._todoService) : super(TodosInitial()) {
     on<LoadTodosEvent>((event, emit) {
       final todos = _todoService.getTasks(event.username);
-      emit(TodosLoadedState(todos));
+      emit(TodosLoadedState(todos, event.username));
+    });
+
+    on<AddTodoEvent>((event, emit) {
+      final currentState = state as TodosLoadedState;
+      final todos = _todoService.addTask(event.todoText, currentState.username);
+      add(LoadTodosEvent(currentState.username));
     });
   }
 }

@@ -12,3 +12,12 @@ class LoadTodosEvent extends TodosEvent {
   @override
   List<Object> get props => [username];
 }
+
+class AddTodoEvent extends TodosEvent {
+  final String todoText;
+
+  const AddTodoEvent(this.todoText);
+
+  @override
+  List<Object?> get props => [todoText];
+}
